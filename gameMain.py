@@ -5,7 +5,6 @@ This is the Main drive file.
 import pygame as p
 import ChessEngine as ChessEngine
 import MenuState
-import sys
 
 
 
