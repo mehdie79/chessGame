@@ -25,7 +25,7 @@ class MenuState():
         self.button_color_3= self.gray
         self.button_color_4= self.gray
         self.button_rect_1, self.button_text_1, self.button_text_rect_1= self.createMenuButton(150, 130, 250,70, "Play vs Computer", 24)
-        self.button_rect_2, self.button_text_2, self.button_text_rect_2= self.createMenuButton(150, 260, 250,70, "Play vs Human", 24)
+        self.button_rect_2, self.button_text_2, self.button_text_rect_2= self.createMenuButton(150, 260, 250,70, "Multiplayer", 24)
         self.button_rect_3, self.button_text_3, self.button_text_rect_3= self.createMenuButton(150, 390, 250,70, "Chess History", 24)
         self.history_rect, self.chess_history = self.chessHistoryMenu()
         self.button_rect_4, self.button_text_4, self.button_text_rect_4= self.createMenuButton(20, 360, 200,70, "Return to Main menu", 18) 
