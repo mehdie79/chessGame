@@ -126,6 +126,9 @@ def findBestMoveMinMax(gameState, validMoves):
     
     
     findMoveNegaMaxAlphaBeta(gameState, validMoves, DEPTH, -CHECKMATE, CHECKMATE ,1 if gameState.whiteToMove else -1)
+    
+    if nextMove == None:
+        return findBestMove(gameState, validMoves)
 
     return nextMove
 

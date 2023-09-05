@@ -116,6 +116,16 @@ class Server():
                         else:
                             connections[player_id+1].sendall(message.encode(self.FORMAT))
 
+                    elif msg[0] == "draw":
+                        self.game_finished = True
+                        message = 'draw'
+                        # self.connected = False
+                        if player_one_turn:
+                            connections[player_id-1].sendall(message.encode(self.FORMAT))
+                        else:
+                            connections[player_id+1].sendall(message.encode(self.FORMAT))
+                    
+
         if quit_game:
             return False
         else:

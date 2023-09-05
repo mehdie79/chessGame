@@ -26,7 +26,7 @@ class GameState():
         self.gameOver = False
         self.animation = False
         self.playerOne = True # If it's true we are human false is AI
-        self.playerTwo = False # If it's true we are human false is AI
+        self.playerTwo = True # If it's true we are human false is AI
         self.player_quit = False
         self.player_select_restart = False
         self.player_select_menu = False

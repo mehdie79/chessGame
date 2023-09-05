@@ -99,7 +99,10 @@ class Client():
         
         elif command[0] == "stale_mate":
             self.gameState.gameOver = True
-            self.gameState.drawText(screen, "Stalemate")
+            self.other_player_moved = True
+            self.game_ended = True
+        elif command[0] == "draw":
+            self.other_player_moved = True
             self.game_ended = True
 
     def run_client(self, screen):
@@ -186,6 +189,9 @@ class Client():
                         elif self.gameState.gs.staleMate:
                             message = "stale_mate"
                             self.conn.sendall(message.encode('utf-8'))
+                        elif self.gameState.gs.draw:
+                            message = "draw"
+                            self.conn.sendall(message.encode('utf-8'))
                 
 
             self.gameState.drawGameState(screen)
@@ -203,6 +209,11 @@ class Client():
                     self.gameState.controlEndPageButtonColor()
                     self.control_client_end_game()
                     self.gameState.drawEndGamePage(screen, "Stalemate")
+            elif self.gameState.gs.draw:
+                    self.gameState.controlEndPageButtonColor()
+                    self.control_client_end_game()
+                    self.gameState.drawEndGamePage(screen, "Draw")
+
 
             if not self.other_player_started:
                 self.waiting_to_connect(screen)
