@@ -81,7 +81,7 @@ def findBestMove(gameState,validMoves):
             elif gameState.staleMate:
                 score = STALEMATE
             else:
-                score = -turnMultiplier * scoreMaterial(gameState.board)
+                score = -turnMultiplier * scoreMaterial(gameState)
 
             if score > opponentMaxscore:
                 opponentMaxscore = score
