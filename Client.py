@@ -54,6 +54,10 @@ class Client():
         self.other_player_location1_y = None
         self.other_player_location2_x = None
         self.other_player_location2_x = None
+        
+
+        self.other_player_quit = False
+        self.player_quit = False
     
     def connect_server(self):
         self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -69,7 +73,7 @@ class Client():
         textObject = font.render(text, 0, self.p.Color("Black"))
         screen.blit(textObject, textLocation.move(2,2))
 
-    def process_message(self, msg, screen):
+    def process_message(self, msg):
         d_msg = msg.decode()
         
         command = d_msg.split(" ")
@@ -95,18 +99,24 @@ class Client():
             self.conn.sendall(message.encode('utf-8'))
         elif command[0] == "check_mate":
             self.other_player_moved = True
-            self.game_ended = True
+            #self.game_ended = True
         
         elif command[0] == "stale_mate":
             self.gameState.gameOver = True
             self.other_player_moved = True
-            self.game_ended = True
+            #self.game_ended = True
         elif command[0] == "draw":
             self.other_player_moved = True
-            self.game_ended = True
+            #self.game_ended = True
+        elif command[0] == "player_quit":
+            self.gameState.gameOver = True
+            #self.game_ended = True
+            self.other_player_quit = True
+            
 
-    def run_client(self, screen):
-        self.receive_thread = threading.Thread(target=self.communicate_server, args=(screen,))
+
+    def run_client(self):
+        self.receive_thread = threading.Thread(target=self.communicate_server)
         self.receive_thread.start()
 
     def control_client_end_game(self):
@@ -116,10 +126,21 @@ class Client():
              self.game_running = False
              self.game_ended = True
              self.gameState.player_select_menu = False
+             self.other_player_quit = False
         elif self.gameState.player_select_restart:
             message = "restart"
             self.gameState.player_select_restart = False
             self.other_player_started = False
+            self.other_player_quit = False
+        elif self.gameState.player_quit:
+            self.game_running = False    
+            message = "quit" 
+            self.conn.sendall(message.encode('utf-8'))
+            self.game_ended = True
+            self.player_quit = True
+            self.receive_thread.join()
+            self.p.quit()
+            sys.exit()
         
         self.conn.sendall(message.encode('utf-8'))
 
@@ -144,17 +165,24 @@ class Client():
             if not self.gameState.gameOver:
                 for event in self.p.event.get():
                     if event.type == self.p.QUIT:
-                        self.game_running = False
+                        self.game_running = False    
+                        message = "player_quit" 
+                        self.conn.sendall(message.encode('utf-8'))
                         self.game_ended = True
+                        self.player_quit = True
+                        self.receive_thread.join()
+                        self.p.quit()
+                        sys.exit()
+                        
 
                         #self.p.quit()
                         # wait until thread is completely executed
                         
-                        self.receive_thread.join()
+                        #self.receive_thread.join()
                             # if not self.server.server_already_running:
                             #     self.server.server_thread.join()
                         
-                        sys.exit()
+                        #sys.exit()
            
 
                     if self.your_turn and not self.other_player_moved and not self.gameState.gs.checkMate:
@@ -195,6 +223,13 @@ class Client():
                 
 
             self.gameState.drawGameState(screen)
+            
+
+            if self.other_player_quit:
+                self.gameState.controlEndPageButtonColor()
+                self.control_client_end_game()
+                self.gameState.drawEndGamePage(screen, "You won the second player resigned")
+
             if self.gameState.gs.checkMate:
                     self.gameState.gameOver = True
                     # self.game_running = False
@@ -222,7 +257,7 @@ class Client():
             self.p.display.flip()
 
     # receive message from server
-    def communicate_server(self, screen):
+    def communicate_server(self):
     
         self.connect_server()
 
@@ -230,8 +265,10 @@ class Client():
         while not self.game_ended:
             try:
                 data = self.conn.recv(1024)
+                if self.game_ended:
+                    break
                 # process message
-                self.process_message(data, screen)
+                self.process_message(data)
             except:
                 pass
         # close the connection

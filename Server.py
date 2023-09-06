@@ -83,8 +83,22 @@ class Server():
                 message = 'quit'
                 connections[player_id].sendall(message.encode(self.FORMAT))
 
+                if player_id % 2 == 0:
+                    connections[player_id + 1].sendall(message.encode(self.FORMAT))
+                else: 
+                    connections[player_id - 1].sendall(message.encode(self.FORMAT))
+            elif data == "player_quit":
+                connected = False
+                quit_game = True
+                message = "player_quit"
+                
+                connections[0].sendall(message.encode(self.FORMAT))
+                connections[1].sendall(message.encode(self.FORMAT))
+
+
             elif data == "restart":
                 connected = False
+
             else:
                 if (data and your_player_one and player_one_turn) or (not your_player_one and not player_one_turn):
                     msg = data.split(" ")
