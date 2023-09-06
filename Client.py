@@ -99,18 +99,18 @@ class Client():
             self.conn.sendall(message.encode('utf-8'))
         elif command[0] == "check_mate":
             self.other_player_moved = True
-            #self.game_ended = True
+            
         
         elif command[0] == "stale_mate":
             self.gameState.gameOver = True
             self.other_player_moved = True
-            #self.game_ended = True
+            
         elif command[0] == "draw":
             self.other_player_moved = True
-            #self.game_ended = True
+           
         elif command[0] == "player_quit":
             self.gameState.gameOver = True
-            #self.game_ended = True
+            
             self.other_player_quit = True
             
 
