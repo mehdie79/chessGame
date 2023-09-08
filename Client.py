@@ -170,15 +170,6 @@ class Client():
                         self.p.quit()
                         sys.exit()
                         
-
-                        #self.p.quit()
-                        # wait until thread is completely executed
-                        
-                        #self.receive_thread.join()
-                            # if not self.server.server_already_running:
-                            #     self.server.server_thread.join()
-                        
-                        #sys.exit()
            
 
                     if self.your_turn and not self.other_player_moved and not self.gameState.gs.checkMate:
@@ -228,7 +219,6 @@ class Client():
 
             if self.gameState.gs.checkMate:
                     self.gameState.gameOver = True
-                    # self.game_running = False
                     self.gameState.controlEndPageButtonColor()
                     self.control_client_end_game()
                     if self.gameState.gs.whiteToMove:
@@ -236,7 +226,6 @@ class Client():
                     else:
                         self.gameState.drawEndGamePage(screen, "White Wins by Checkmate")
             elif self.gameState.gs.staleMate:
-                    # self.game_running = False
                     self.gameState.controlEndPageButtonColor()
                     self.control_client_end_game()
                     self.gameState.drawEndGamePage(screen, "Stalemate")

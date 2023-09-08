@@ -1,7 +1,6 @@
 import socket
 import threading
 import queue
-# import time
 
 class Server():
     threads = []
@@ -9,8 +8,7 @@ class Server():
         self.HEADER = 2048
         self.PORT = 5555  # port number
 
-        # host_name = socket.gethostname()
-        # SERVER = socket.gethostbyname(host_name) # get local host IP
+       
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         self.SERVER = s.getsockname()[0]  # get local host IP
@@ -31,12 +29,11 @@ class Server():
         self.number_connections = 0
         self.waiting_clients_list = []
         self.player_number = 0
-        # global ready_client
-        # ready_client = 0
 
         self.p = p
         self.clock = clock
         self.game_finished = False
+
         # Create a Lock (mutex) instance
         self.mutex_client_connections = threading.Lock()
 
@@ -115,7 +112,7 @@ class Server():
                     elif msg[0] == "check_mate":
                         self.game_finished = True
                         message = 'check_mate' + " " + msg[1]
-                        # self.connected = False
+                       
                         if player_one_turn: 
                             connections[player_id-1].sendall(message.encode(self.FORMAT))
                         else:
@@ -124,7 +121,7 @@ class Server():
                     elif msg[0] == "stale_mate":
                         self.game_finished = True
                         message = 'stale_mate'
-                        # self.connected = False
+                        
                         if player_one_turn:
                             connections[player_id-1].sendall(message.encode(self.FORMAT))
                         else:
@@ -133,7 +130,7 @@ class Server():
                     elif msg[0] == "draw":
                         self.game_finished = True
                         message = 'draw'
-                        # self.connected = False
+                        
                         if player_one_turn:
                             connections[player_id-1].sendall(message.encode(self.FORMAT))
                         else:
@@ -151,7 +148,7 @@ class Server():
     def initiate_client_workers(self, connections):
         player_id = 2
         result_queue = queue.Queue()
-        #self.initiate_client_thread = threading.Thread(target=self.listen_to_client , args=(player_id,))
+        
         initiate_client_thread = threading.Thread(target=lambda pid, ypn, conn: result_queue.put(self.listen_to_client(pid,ypn, conn)), args=(player_id-2,True, connections))
         initiate_client_thread.start()
         initiate_client_thread_2 = threading.Thread(target=lambda pid, ypn, conn: result_queue.put(self.listen_to_client(pid,ypn, conn)), args=(player_id-1,False, connections))
@@ -232,8 +229,7 @@ class Server():
         run = True
         max_connections = 2
         self.server.listen()
-        # start_time = 0
-        # end_time = 0
+       
         print(f"[LISTENING] Server is listing on {self.SERVER} and port {self.PORT}")
         while run:
             conn, addr = self.server.accept()

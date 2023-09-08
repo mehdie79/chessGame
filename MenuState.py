@@ -42,7 +42,6 @@ class MenuState():
 
     def menu_control_user_selection(self, screen):
         if self.isMenuRunning:
-            #print("RUN MENU")
             self.runMenu(screen)
         elif self.gameState.running:
             
@@ -65,8 +64,6 @@ class MenuState():
         self.client.run_client()
         self.client.display_client_game(screen)
 
-        # if not self.server.server_already_running:
-        #     self.server.server_thread.join()
         if self.client.player_quit:
             self.running = False
 
