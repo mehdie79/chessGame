@@ -68,12 +68,14 @@ class GameState():
 
     
     def updateCastleRights(self, move):
+        # Case 1: White/Black King has moved
         if move.pieceMoved == "wK":
             self.currentCastlingRight.wks = False
             self.currentCastlingRight.wqs = False
         elif move.pieceMoved == "bK":
             self.currentCastlingRight.bks = False
             self.currentCastlingRight.bqs = False
+        # Case 2: White\Black rook has moved
         elif move.pieceMoved == 'wR':
             if move.startRow == 7:
                 if move.startCol == 0:
@@ -87,7 +89,7 @@ class GameState():
                 elif move.startCol == 7:
                     self.currentCastlingRight.bks = False
 
-        # For the case that rook is captured
+        # Case 3: The rook has been captured
         if move.pieceCaptured == "WR":
             if move.endRow == 7:
                 if move.endCol == 0:

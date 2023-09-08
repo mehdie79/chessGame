@@ -62,11 +62,14 @@ class MenuState():
             self.server.start_server()
         self.client = Client.Client(self.p, self.clock)
         self.client.get_server_info(screen)
-        self.client.run_client(screen)
+        self.client.run_client()
         self.client.display_client_game(screen)
 
         # if not self.server.server_already_running:
         #     self.server.server_thread.join()
+        if self.client.player_quit:
+            self.running = False
+
         self.client.receive_thread.join()
         
     def runMenu(self, screen):
