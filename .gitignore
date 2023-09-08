@@ -1,5 +1,5 @@
 # Ignore the pycatch folder and its contents
-pycatch/
+__pycache__/
 
 # Ignore the dist folder and its contents
 dist/
