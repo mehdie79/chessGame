@@ -1,0 +1,11 @@
+# Ignore the pycatch folder and its contents
+pycatch/
+
+# Ignore the dist folder and its contents
+dist/
+
+# Ignore the build folder and its contents
+build/
+
+# Ignore the gameMain.spec file
+gameMain.spec
