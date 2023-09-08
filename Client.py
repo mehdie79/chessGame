@@ -94,7 +94,8 @@ class Client():
             message = "your_turn"
             self.conn.sendall(message.encode('utf-8'))
         elif command[0] == "check_mate":
-            self.other_player_moved = True      
+            self.other_player_moved = True
+            
         
         elif command[0] == "stale_mate":
             self.gameState.gameOver = True
@@ -168,6 +169,16 @@ class Client():
                         self.receive_thread.join()
                         self.p.quit()
                         sys.exit()
+                        
+
+                        #self.p.quit()
+                        # wait until thread is completely executed
+                        
+                        #self.receive_thread.join()
+                            # if not self.server.server_already_running:
+                            #     self.server.server_thread.join()
+                        
+                        #sys.exit()
            
 
                     if self.your_turn and not self.other_player_moved and not self.gameState.gs.checkMate:
